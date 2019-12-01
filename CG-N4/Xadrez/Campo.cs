@@ -10,15 +10,21 @@ namespace gcgcg
 
 
         public Campo() {
-            
+            _initializePawns();
         }
 
 
-        private void initializePawns() {
+        private void _initializePawns() {
             for (int i = 0; i < tabuleiro.Length; i++)
             {
-                tabuleiro[1, i] = new Peao(COR.BRANCO);
-                tabuleiro[6, i] = new Peao(COR.PRETO);
+                var peaoPreto = new Peao(COR.PRETO, i, 6);
+                var peaoBranco = new Peao(COR.BRANCO, i, 1);
+                
+                Brancas.Add(peaoBranco);
+                Pretas.Add(peaoPreto);
+
+                tabuleiro[i, 1] = peaoBranco;
+                tabuleiro[i, 6] = peaoPreto;
             }
         }
     }
