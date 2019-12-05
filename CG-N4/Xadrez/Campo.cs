@@ -18,13 +18,66 @@ namespace gcgcg
             _inicializarPeoes();
             _inicializarTorres();
             _inicializarCavalos();
+            _inicializarBispos();
+            _inicializarRainha();
+            _inicializarRei();
+            
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    // if (Tabuleiro[i, j] != null)
+                    // {
+                    //     if (Tabuleiro[i, j].Cor == COR.BRANCO)
+                    //     {
+                    //         var a = Tabuleiro[i, j].MovimentosPossiveis(Tabuleiro, Pretas);
+                    //         Tabuleiro[i, j].Movimentar(a?[0], Tabuleiro);
+                    //     }
+                    //     else
+                    //     {
+                    //         var a = Tabuleiro[i, j].MovimentosPossiveis(Tabuleiro, Brancas);
+                    //         Tabuleiro[i, j].Movimentar(a?[0], Tabuleiro);
+                    //     }
+                    // }
+                    Console.Write(Tabuleiro[i, j] + ", ");
+                }
+                Console.WriteLine();
+            }
+            // var piroquinha = Tabuleiro[0, 1].MovimentosPossiveis(Tabuleiro, Pretas);
+            // MoverPeca(Tabuleiro[0, 1], piroquinha[0]);
+            // var pirocao = Tabuleiro[0, 0].MovimentosPossiveis(Tabuleiro, Pretas);
+
+            Console.WriteLine();
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    // if (Tabuleiro[i, j] != null)
+                    // {
+                    //     if (Tabuleiro[i, j].Cor == COR.BRANCO)
+                    //     {
+                    //         var a = Tabuleiro[i, j].MovimentosPossiveis(Tabuleiro, Pretas);
+                    //         Tabuleiro[i, j].Movimentar(a?[0], Tabuleiro);
+                    //     }
+                    //     else
+                    //     {
+                    //         var a = Tabuleiro[i, j].MovimentosPossiveis(Tabuleiro, Brancas);
+                    //         Tabuleiro[i, j].Movimentar(a?[0], Tabuleiro);
+                    //     }
+                    // }
+                    Console.Write(Tabuleiro[i, j] + ", ");
+                }
+                Console.WriteLine();
+            }
         }
+
+
 
         public void MoverPeca(Peca peca, Coordenada coordenada)
         {
             var pecaDestino = Tabuleiro[coordenada.X, coordenada.Y];
             
-            _guardarEstado();
+            // _guardarEstado();
             _podeDesfazer = true;
             
             if (pecaDestino != null) {
@@ -38,7 +91,8 @@ namespace gcgcg
                 }
 
             }
-            
+            Tabuleiro[peca.X, peca.Y] = null;
+
             peca.Movimentar(coordenada, Tabuleiro);
             
             Tabuleiro[coordenada.X, coordenada.Y] = peca;
@@ -49,7 +103,7 @@ namespace gcgcg
         {
             Brancas.Clear();
             Pretas.Clear();
-            Array.Clear(Tabuleiro, 0, Tabuleiro.Length);
+            Array.Clear(Tabuleiro, 0, 8);
 
             Brancas.AddRange(_desfazerBrancas);
             Pretas.AddRange(_desfazerPretas);
@@ -63,7 +117,7 @@ namespace gcgcg
         {
             _desfazerBrancas.Clear();
             _desfazerPretas.Clear();
-            Array.Clear(_desfazerTabuleiro, 0, _desfazerTabuleiro.Length);
+            Array.Clear(_desfazerTabuleiro, 0, 8);
 
             _desfazerBrancas.AddRange(Brancas);
             _desfazerPretas.AddRange(Pretas);
@@ -71,7 +125,7 @@ namespace gcgcg
         }
         private void _inicializarPeoes() 
         {
-            for (int i = 0; i < Tabuleiro.Length; i++)
+            for (int i = 0; i < 8; i++)
             {
                 var peaoBranco = new Peao(i, 1, COR.BRANCO);
                 var peaoPreto = new Peao(i, 6, COR.PRETO);
@@ -87,9 +141,9 @@ namespace gcgcg
         private void _inicializarTorres() 
         {
             var torreBrancaEsquerda = new Torre(0, 0, COR.BRANCO);
-            var torreBrancaDireita = new Torre(0, 7, COR.BRANCO);
+            var torreBrancaDireita = new Torre(7, 0, COR.BRANCO);
 
-            var torrePretaEsquerda = new Torre(7, 0, COR.PRETO);
+            var torrePretaEsquerda = new Torre(0, 7, COR.PRETO);
             var torrePretaDireita = new Torre(7, 7, COR.PRETO);
 
             Brancas.Add(torreBrancaEsquerda);
@@ -99,19 +153,19 @@ namespace gcgcg
             Pretas.Add(torrePretaDireita);
 
             Tabuleiro[0, 0] = torreBrancaEsquerda;
-            Tabuleiro[0, 7] = torreBrancaDireita;
+            Tabuleiro[7, 0] = torreBrancaDireita;
 
-            Tabuleiro[7, 0] = torrePretaEsquerda;
+            Tabuleiro[0, 7] = torrePretaEsquerda;
             Tabuleiro[7, 7] = torrePretaDireita;
         }
 
         private void _inicializarCavalos()
         {
-            var cavaloBrancoEsquerdo = new Cavalo(0, 1, COR.BRANCO);
-            var cavaloBrancoDireito = new Cavalo(0, 6, COR.BRANCO);
+            var cavaloBrancoEsquerdo = new Cavalo(1, 0, COR.BRANCO);
+            var cavaloBrancoDireito = new Cavalo(6, 0, COR.BRANCO);
 
-            var cavaloPretoEsquerdo = new Cavalo(7, 1, COR.PRETO);
-            var cavaloPretoDireito = new Cavalo(7, 6, COR.PRETO);
+            var cavaloPretoEsquerdo = new Cavalo(1, 7, COR.PRETO);
+            var cavaloPretoDireito = new Cavalo(6, 7, COR.PRETO);
 
             Brancas.Add(cavaloBrancoEsquerdo);
             Brancas.Add(cavaloBrancoDireito);
@@ -119,20 +173,20 @@ namespace gcgcg
             Pretas.Add(cavaloPretoEsquerdo);
             Pretas.Add(cavaloPretoDireito);
 
-            Tabuleiro[0, 1] = cavaloBrancoEsquerdo;
-            Tabuleiro[0, 6] = cavaloBrancoDireito;
+            Tabuleiro[1, 0] = cavaloBrancoEsquerdo;
+            Tabuleiro[6, 0] = cavaloBrancoDireito;
 
-            Tabuleiro[7, 1] = cavaloPretoEsquerdo;
-            Tabuleiro[7, 6] = cavaloPretoDireito;
+            Tabuleiro[1, 7] = cavaloPretoEsquerdo;
+            Tabuleiro[6, 7] = cavaloPretoDireito;
         }
 
         private void _inicializarBispos()
         {
-            var bispoBrancoEsquerdo = new Bispo(0, 2, COR.BRANCO);
-            var bispoBrancoDireito = new Bispo(0, 5, COR.BRANCO);
+            var bispoBrancoEsquerdo = new Bispo(2, 0, COR.BRANCO);
+            var bispoBrancoDireito = new Bispo(5, 0, COR.BRANCO);
 
-            var bispoPretoEsquerdo = new Bispo(7, 2, COR.PRETO);
-            var bispoPretoDireito = new Bispo(7, 5, COR.PRETO);
+            var bispoPretoEsquerdo = new Bispo(2, 7, COR.PRETO);
+            var bispoPretoDireito = new Bispo(5, 7, COR.PRETO);
 
             Brancas.Add(bispoBrancoEsquerdo);
             Brancas.Add(bispoBrancoDireito);
@@ -140,23 +194,35 @@ namespace gcgcg
             Pretas.Add(bispoPretoEsquerdo);
             Pretas.Add(bispoPretoDireito);
 
-            Tabuleiro[0, 2] = bispoBrancoEsquerdo;
-            Tabuleiro[0, 5] = bispoBrancoDireito;
+            Tabuleiro[2, 0] = bispoBrancoEsquerdo;
+            Tabuleiro[5, 0] = bispoBrancoDireito;
 
-            Tabuleiro[7, 2] = bispoPretoEsquerdo;
-            Tabuleiro[7, 5] = bispoPretoDireito;
+            Tabuleiro[2, 7] = bispoPretoEsquerdo;
+            Tabuleiro[5, 7] = bispoPretoDireito;
         }
 
         private void _inicializarRainha()
         {
-            var rainhaBranca = new Rainha(0, 3, COR.BRANCO);
-            var rainhaPreta = new Rainha(7, 3, COR.PRETO);
+            var rainhaBranca = new Rainha(3, 0, COR.BRANCO);
+            var rainhaPreta = new Rainha(3, 7, COR.PRETO);
 
             Brancas.Add(rainhaBranca);
             Pretas.Add(rainhaPreta);
 
-            Tabuleiro[0, 3] = rainhaBranca;
-            Tabuleiro[7, 3] = rainhaPreta;
+            Tabuleiro[3, 0] = rainhaBranca;
+            Tabuleiro[3, 7] = rainhaPreta;
+        }
+
+        private void _inicializarRei()
+        {
+            var reiBranco = new Rei(4, 0, COR.BRANCO);
+            var reiPreto = new Rei(4, 7, COR.PRETO);
+
+            Brancas.Add(reiBranco);
+            Pretas.Add(reiPreto);
+
+            Tabuleiro[4, 0] = reiBranco;
+            Tabuleiro[4, 7] = reiPreto;
         }
     }
 }

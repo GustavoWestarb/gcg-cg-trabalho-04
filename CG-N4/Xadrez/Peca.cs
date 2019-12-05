@@ -42,7 +42,7 @@ namespace gcgcg
             List<Coordenada> possibilidades = new List<Coordenada>();
             
             int y = this.Y + 1;
-            for (int x = this.X + 1; x < tabuleiro.Length && y < tabuleiro.Length; x++)
+            for (int x = this.X + 1; x < 8 && y < 8; x++)
             {
                 if (tabuleiro[x, y] == null)
                 {
@@ -58,7 +58,7 @@ namespace gcgcg
             }
             
             y = this.Y - 1;
-            for (int x = this.X + 1; x < tabuleiro.Length && y > tabuleiro.Length; x++)
+            for (int x = this.X + 1; x < 8 && y > 8; x++)
             {
                 if (tabuleiro[x, y] == null)
                 {
@@ -74,7 +74,7 @@ namespace gcgcg
             }
 
             y = this.Y + 1;
-            for (int x = this.X - 1; x > tabuleiro.Length && y < tabuleiro.Length; x--)
+            for (int x = this.X - 1; x > 8 && y < 8; x--)
             {
                 if (tabuleiro[x, y] == null)
                 {
@@ -90,7 +90,7 @@ namespace gcgcg
             }
             
             y = this.Y - 1;
-            for (int x = this.X - 1; x > tabuleiro.Length && y > tabuleiro.Length; x--)
+            for (int x = this.X - 1; x > 8 && y > 8; x--)
             {
                 if (tabuleiro[x, y] == null)
                 {
@@ -116,7 +116,7 @@ namespace gcgcg
             // para assim que encontra o fim do tabuleiro ou uma outra peça.
             for (int i = this.X + 1; i < 8; i++)
             {
-                if (tabuleiro[i, this.Y] != null) 
+                if (tabuleiro[i, this.Y] == null) 
                 {
                     possibilidades.Add(new Coordenada(i, this.Y));
                     continue;
@@ -130,7 +130,7 @@ namespace gcgcg
 
             for (int i = this.X - 1; i >= 0; i--)
             {
-                if (tabuleiro[i, this.Y] != null) 
+                if (tabuleiro[i, this.Y] == null) 
                 {
                     possibilidades.Add(new Coordenada(i, this.Y));
                     continue;
@@ -144,7 +144,7 @@ namespace gcgcg
 
             for (int i = this.Y + 1; i < 8; i++)
             {
-                if (tabuleiro[this.X, i] != null) 
+                if (tabuleiro[this.X, i] == null) 
                 {
                     possibilidades.Add(new Coordenada(this.X, i));
                     continue;
@@ -158,7 +158,7 @@ namespace gcgcg
 
             for (int i = this.Y - 1; i >= 0; i--)
             {
-                if (tabuleiro[this.X, i] != null) 
+                if (tabuleiro[this.X, i] == null) 
                 {
                     possibilidades.Add(new Coordenada(this.X, i));
                     continue;

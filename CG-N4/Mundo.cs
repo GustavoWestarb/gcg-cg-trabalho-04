@@ -226,9 +226,10 @@ namespace gcgcg
   {
     static void Main(string[] args)
     {
-      Mundo window = Mundo.GetInstance(600, 600);
-      window.Title = "CG-N4";
-      window.Run(1.0 / 60.0);
+      new Campo();
+      // Mundo window = Mundo.GetInstance(600, 600);
+      // window.Title = "CG-N4";
+      // window.Run(1.0 / 60.0);
     }
   }
 }

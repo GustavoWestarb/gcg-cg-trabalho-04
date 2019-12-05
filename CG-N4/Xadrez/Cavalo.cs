@@ -23,22 +23,22 @@ namespace gcgcg
             var YInferiorDireito = this.Y - 2;
 
 
-            if (XSuperiorEsquerdo > tabuleiro.Length && YSuperiorEsquerdo < tabuleiro.Length)
+            if (XSuperiorEsquerdo > 8 && YSuperiorEsquerdo < 8)
             {
                 possibilidades.Add(new Coordenada(XSuperiorEsquerdo, YSuperiorEsquerdo));
             }
             
-            if (XSuperiorDireito < tabuleiro.Length && YSuperiorDireito < tabuleiro.Length)
+            if (XSuperiorDireito < 8 && YSuperiorDireito < 8)
             {
                 possibilidades.Add(new Coordenada(XSuperiorDireito, YSuperiorDireito));
             }
 
-            if (XInferiorEsquerdo > tabuleiro.Length && YInferiorEsquerdo > tabuleiro.Length)
+            if (XInferiorEsquerdo > 8 && YInferiorEsquerdo > 8)
             {
                 possibilidades.Add(new Coordenada(XInferiorEsquerdo, YInferiorEsquerdo));
             }
 
-            if (XInferiorDireito < tabuleiro.Length && YInferiorDireito > tabuleiro.Length)
+            if (XInferiorDireito < 8 && YInferiorDireito > 8)
             {
                 possibilidades.Add(new Coordenada(XInferiorDireito, YInferiorDireito));
             }
