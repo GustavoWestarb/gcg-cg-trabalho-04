@@ -1,6 +1,6 @@
 namespace gcgcg
 {
-    class Coordenada {
+    internal class Coordenada {
         public int X;
         public int Y;
 

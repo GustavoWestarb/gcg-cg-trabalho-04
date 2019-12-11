@@ -1,29 +1,30 @@
 using System.Collections.Generic;
 
-namespace gcgcg 
+namespace gcgcg
 {
-    abstract class Peca
+    internal abstract class Peca
     {
         private int _x;
         private int _y;
         private readonly COR _cor;
         private bool _seMoveu = false;
 
-        public int X 
-        { 
-            get => _x; 
-            set => _x = value; 
+        public int X
+        {
+            get => _x;
+            set => _x = value;
         }
-        public int Y 
-        { 
-            get => _y; 
-            set => _y = value; 
+        public int Y
+        {
+            get => _y;
+            set => _y = value;
         }
 
         public COR Cor { get => _cor; }
 
         public bool SeMoveu { get => _seMoveu; }
-        protected Peca(int x, int y, COR cor) {
+        protected Peca(int x, int y, COR cor)
+        {
             this._x = x;
             this._y = y;
             this._cor = cor;
@@ -40,7 +41,7 @@ namespace gcgcg
         protected List<Coordenada> _movimentosDiagonal(Peca[,] tabuleiro)
         {
             List<Coordenada> possibilidades = new List<Coordenada>();
-            
+
             int y = this.Y + 1;
             for (int x = this.X + 1; x < 8 && y < 8; x++)
             {
@@ -56,7 +57,7 @@ namespace gcgcg
                 }
                 break;
             }
-            
+
             y = this.Y - 1;
             for (int x = this.X + 1; x < 8 && y > 8; x++)
             {
@@ -88,7 +89,7 @@ namespace gcgcg
                 }
                 break;
             }
-            
+
             y = this.Y - 1;
             for (int x = this.X - 1; x > 8 && y > 8; x--)
             {
@@ -111,12 +112,12 @@ namespace gcgcg
         protected List<Coordenada> _movimentosVertical(Peca[,] tabuleiro)
         {
             List<Coordenada> possibilidades = new List<Coordenada>();
-            
+
             // verifica em todas as linhas para onde ela pode ir, 
             // para assim que encontra o fim do tabuleiro ou uma outra peça.
             for (int i = this.X + 1; i < 8; i++)
             {
-                if (tabuleiro[i, this.Y] == null) 
+                if (tabuleiro[i, this.Y] == null)
                 {
                     possibilidades.Add(new Coordenada(i, this.Y));
                     continue;
@@ -130,7 +131,7 @@ namespace gcgcg
 
             for (int i = this.X - 1; i >= 0; i--)
             {
-                if (tabuleiro[i, this.Y] == null) 
+                if (tabuleiro[i, this.Y] == null)
                 {
                     possibilidades.Add(new Coordenada(i, this.Y));
                     continue;
@@ -144,7 +145,7 @@ namespace gcgcg
 
             for (int i = this.Y + 1; i < 8; i++)
             {
-                if (tabuleiro[this.X, i] == null) 
+                if (tabuleiro[this.X, i] == null)
                 {
                     possibilidades.Add(new Coordenada(this.X, i));
                     continue;
@@ -158,7 +159,7 @@ namespace gcgcg
 
             for (int i = this.Y - 1; i >= 0; i--)
             {
-                if (tabuleiro[this.X, i] == null) 
+                if (tabuleiro[this.X, i] == null)
                 {
                     possibilidades.Add(new Coordenada(this.X, i));
                     continue;
@@ -169,12 +170,12 @@ namespace gcgcg
                 }
                 break;
             }
-           
+
             return possibilidades;
         }
     }
 
-    enum COR 
+    enum COR
     {
         BRANCO,
         PRETO

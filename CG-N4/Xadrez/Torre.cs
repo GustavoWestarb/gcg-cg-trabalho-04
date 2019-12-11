@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 namespace gcgcg {
-    class Torre: Peca {
+    internal class Torre: Peca {
 
         public Torre(int x, int y, COR cor): base(x, y, cor) { }
         

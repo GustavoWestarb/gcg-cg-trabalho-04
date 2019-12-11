@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace gcgcg
 {
-    class Rainha: Peca
+    internal class Rainha: Peca
     {
         public Rainha(int x, int y, COR cor): base(x, y, cor) { }
 

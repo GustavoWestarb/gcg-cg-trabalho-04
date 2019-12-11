@@ -3,7 +3,7 @@ using System;
 
 namespace gcgcg
 {
-    class Peao: Peca {
+    internal class Peao: Peca {
 
         public Peao(int x, int y, COR cor): base(x, y, cor) { }
 

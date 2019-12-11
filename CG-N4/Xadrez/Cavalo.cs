@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace gcgcg
 {
-    class Cavalo: Peca
+    internal class Cavalo: Peca
     {
         public Cavalo(int x, int y, COR cor): base(x, y, cor) { }
 

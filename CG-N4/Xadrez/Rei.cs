@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace gcgcg
 {
-    class Rei: Peca
+    internal class Rei: Peca
     {
 
         public Rei(int x, int y, COR cor): base(x, y, cor) { }
