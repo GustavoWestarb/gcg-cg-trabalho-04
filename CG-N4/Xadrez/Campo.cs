@@ -16,67 +16,96 @@ namespace gcgcg
 
         public Campo(string rotulo, Objeto paiRef) : base(rotulo, paiRef)
         {
-            _inicializarPeoes();
-            _inicializarTorres();
-            _inicializarCavalos();
-            _inicializarBispos();
-            _inicializarRainha();
-            _inicializarRei();
-            CriarRegistros();
-            ArrumarTranslacao();
+            // _inicializarPeoes();
+            // _inicializarTorres();
+            // _inicializarCavalos();
+            // _inicializarBispos();
+            // _inicializarRainha();
+            // _inicializarRei();
+            // CriarRegistros();
+            // ArrumarTranslacao();
 
-            for (int i = 0; i < 8; i++)
-            {
-                for (int j = 0; j < 8; j++)
-                {
-                    // if (Tabuleiro[i, j] != null)
-                    // {
-                    //     if (Tabuleiro[i, j].Cor == COR.BRANCO)
-                    //     {
-                    //         var a = Tabuleiro[i, j].MovimentosPossiveis(Tabuleiro, Pretas);
-                    //         Tabuleiro[i, j].Movimentar(a?[0], Tabuleiro);
-                    //     }
-                    //     else
-                    //     {
-                    //         var a = Tabuleiro[i, j].MovimentosPossiveis(Tabuleiro, Brancas);
-                    //         Tabuleiro[i, j].Movimentar(a?[0], Tabuleiro);
-                    //     }
-                    // }
-                    Console.Write(Tabuleiro[i, j] + ", ");
-                }
-                Console.WriteLine();
-            }
-            // var piroquinha = Tabuleiro[0, 1].MovimentosPossiveis(Tabuleiro, Pretas);
-            // MoverPeca(Tabuleiro[0, 1], piroquinha[0]);
-            // var pirocao = Tabuleiro[0, 0].MovimentosPossiveis(Tabuleiro, Pretas);
+            // for (int i = 0; i < 8; i++)
+            // {
+            //     for (int j = 0; j < 8; j++)
+            //     {
+            //         // if (Tabuleiro[i, j] != null)
+            //         // {
+            //         //     if (Tabuleiro[i, j].Cor == COR.BRANCO)
+            //         //     {
+            //         //         var a = Tabuleiro[i, j].MovimentosPossiveis(Tabuleiro, Pretas);
+            //         //         Tabuleiro[i, j].Movimentar(a?[0], Tabuleiro);
+            //         //     }
+            //         //     else
+            //         //     {
+            //         //         var a = Tabuleiro[i, j].MovimentosPossiveis(Tabuleiro, Brancas);
+            //         //         Tabuleiro[i, j].Movimentar(a?[0], Tabuleiro);
+            //         //     }
+            //         // }
+            //         Console.Write(Tabuleiro[i, j] + ", ");
+            //     }
+            //     Console.WriteLine();
+            // }
+            // // var piroquinha = Tabuleiro[0, 1].MovimentosPossiveis(Tabuleiro, Pretas);
+            // // MoverPeca(Tabuleiro[0, 1], piroquinha[0]);
+            // // var pirocao = Tabuleiro[0, 0].MovimentosPossiveis(Tabuleiro, Pretas);
 
-            Console.WriteLine();
-            for (int i = 0; i < 8; i++)
-            {
-                for (int j = 0; j < 8; j++)
-                {
-                    // if (Tabuleiro[i, j] != null)
-                    // {
-                    //     if (Tabuleiro[i, j].Cor == COR.BRANCO)
-                    //     {
-                    //         var a = Tabuleiro[i, j].MovimentosPossiveis(Tabuleiro, Pretas);
-                    //         Tabuleiro[i, j].Movimentar(a?[0], Tabuleiro);
-                    //     }
-                    //     else
-                    //     {
-                    //         var a = Tabuleiro[i, j].MovimentosPossiveis(Tabuleiro, Brancas);
-                    //         Tabuleiro[i, j].Movimentar(a?[0], Tabuleiro);
-                    //     }
-                    // }
-                    Console.Write(Tabuleiro[i, j] + ", ");
-                }
-                Console.WriteLine();
-            }
+            // Console.WriteLine();
+            // for (int i = 0; i < 8; i++)
+            // {
+            //     for (int j = 0; j < 8; j++)
+            //     {
+            //         // if (Tabuleiro[i, j] != null)
+            //         // {
+            //         //     if (Tabuleiro[i, j].Cor == COR.BRANCO)
+            //         //     {
+            //         //         var a = Tabuleiro[i, j].MovimentosPossiveis(Tabuleiro, Pretas);
+            //         //         Tabuleiro[i, j].Movimentar(a?[0], Tabuleiro);
+            //         //     }
+            //         //     else
+            //         //     {
+            //         //         var a = Tabuleiro[i, j].MovimentosPossiveis(Tabuleiro, Brancas);
+            //         //         Tabuleiro[i, j].Movimentar(a?[0], Tabuleiro);
+            //         //     }
+            //         // }
+            //         Console.Write(Tabuleiro[i, j] + ", ");
+            //     }
+            //     Console.WriteLine();
+            // }
         }
 
         protected override void DesenharObjeto()
         {
+            // CriarTabuleiro();
 
+            Cubo obj_Cubo = new Cubo("F", null);
+            // obj_Cubo.EscalaXYZ(50, 20, 50);
+            FilhoAdicionar(obj_Cubo);
+
+            Cubo obj_Cubo2 = new Cubo("F", null);
+            // obj_Cubo2.EscalaXYZ(50, 20, 50);
+            obj_Cubo2.TranslacaoXYZ(0, 0, 75);
+            FilhoAdicionar(obj_Cubo2);
+        }
+
+        private void CriarTabuleiro()
+        {
+            int transladarX = 0;
+            int transladarZ = 0;
+
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    Cubo cubo = new Cubo(i + ":" + j, null, false);
+                    // cubo.EscalaXYZ(50, 10, 50);
+                    cubo.TranslacaoXYZ(transladarX, 0, transladarZ);
+                    FilhoAdicionar(cubo);
+                    transladarX += 75;
+                }
+                transladarZ += 75;
+                transladarX = 0;
+            }
         }
 
         public void ArrumarTranslacao()

@@ -39,7 +39,7 @@ namespace gcgcg
         private Cubo obj_Cubo;
         private Cilindro obj_Cilindro;
         private Cone obj_Cone;
-
+        private int visao = 1000;
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -70,12 +70,33 @@ namespace gcgcg
             // objetosLista.Add(obj_Cubo2);
 
             // objetoSelecionado = obj_Cilindro;
-            Campo campo = new Campo("Campo", null);
-            campo.EscalaXYZ(50, 10, 50);
-            objetosLista.Add(campo);
+            // Campo campo = new Campo("Campo", null);
+            // campo.EscalaXYZ(200, 10, 200);
+            // objetosLista.Add(campo);
+
+            int transladarX = 0;
+            int transladarZ = 0;
+            bool corPreta = false;
+
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    Cubo cubo = new Cubo(i + ":" + j, null, corPreta);
+                    cubo.EscalaXYZ(50, 10, 50);
+                    cubo.TranslacaoXYZ(transladarX, 0, transladarZ);
+                    objetosLista.Add(cubo);
+                    transladarX += 75;
+                    objetoSelecionado = cubo;
+                    corPreta = !corPreta;
+                }
+                transladarZ += 75;
+                transladarX = 0;
+                corPreta = !corPreta;
+            }
 
             camera.At = new Vector3(0, 0, 0);
-            camera.Eye = new Vector3(1000, 1000, 1000);
+            camera.Eye = new Vector3(200, 1000, 1000);
             camera.Near = 100.0f;
             camera.Far = 2000.0f;
 
@@ -162,9 +183,16 @@ namespace gcgcg
                     objetoSelecionado.AtribuirIdentidade();
                 //TODO: não está atualizando a BBox com as transformações geométricas
                 else if (e.Key == Key.Left)
-                    objetoSelecionado.TranslacaoXYZ(-10, 0, 0);
-                else if (e.Key == Key.Right)
+                {
+                    visao -= 10;
+                    camera.Eye = new Vector3(visao, 1000, 1000);
+                    // objetoSelecionado.TranslacaoXYZ(-10, 0, 0);
+                }
+                else if (e.Key == Key.Right){
+                     visao += 10;
+                    camera.Eye = new Vector3(visao, 1000, 1000);
                     objetoSelecionado.TranslacaoXYZ(10, 0, 0);
+                }
                 else if (e.Key == Key.Up)
                     objetoSelecionado.TranslacaoXYZ(0, 10, 0);
                 else if (e.Key == Key.Down)
