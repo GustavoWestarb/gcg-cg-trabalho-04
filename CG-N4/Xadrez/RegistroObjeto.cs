@@ -4,6 +4,8 @@ namespace gcgcg
     {
         public Cubo Chao { get; set; }
         public Peca Peca { get; set; }
+        public int TranslacaoX { get; set; }
+        public int TranslacaoZ { get; set; }
 
         public RegistroObjeto() { }
 
@@ -16,7 +18,12 @@ namespace gcgcg
             {
                 Peca.EscalaXYZ(30, 70, 30);
                 Peca.TranslacaoXYZ(translacaoX, 75, translacaoZ);
+                Peca.TranslacaoX = translacaoX;
+                Peca.TranslacaoZ = translacaoZ;
             }
+
+            TranslacaoX = translacaoX;
+            TranslacaoZ = translacaoZ;
         }
     }
 }

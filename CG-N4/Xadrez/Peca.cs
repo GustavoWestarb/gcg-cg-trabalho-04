@@ -4,9 +4,13 @@ namespace gcgcg
 {
     internal abstract class Peca : ObjetoGeometria
     {
+        protected double Red { get; set; }
+        protected double Green { get; set; }
+        protected double Blue { get; set; }
+
         private int _x;
         private int _y;
-        private readonly COR _cor;
+        private COR _cor;
         private bool _seMoveu = false;
 
         public int X
@@ -19,6 +23,9 @@ namespace gcgcg
             get => _y;
             set => _y = value;
         }
+
+        public int TranslacaoX { get; set; }
+        public int TranslacaoZ { get; set; }
 
         public COR Cor { get => _cor; }
         public bool SeMoveu { get => _seMoveu; }
@@ -178,6 +185,29 @@ namespace gcgcg
         #region Métodos gráficos
 
         protected override void DesenharObjeto() { }
+
+        public void SelecionarPeca()
+        {
+            Red = 0;
+            Green = 0;
+            Blue = 1;
+        }
+
+        public void DesselecionarPeca()
+        {
+            if (Cor == COR.BRANCO)
+            {
+                Red = 1;
+                Green = 1;
+                Blue = 1;
+            }
+            else
+            {
+                Red = 0;
+                Green = 0;
+                Blue = 0;
+            }
+        }
 
         #endregion
     }

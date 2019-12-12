@@ -13,6 +13,10 @@ namespace gcgcg
         private Peca[,] _desfazerTabuleiro = new Peca[8, 8];
         private bool _podeDesfazer = false;
         public bool PodeDesfazer { get => _podeDesfazer; }
+        private Peca _pecaSelecionada;
+        private int _posicaoPecaSelecionadaNaLista;
+
+        public enum ORDEM { ANTERIOR, POSTERIOR }
 
         public Campo(string rotulo, Objeto paiRef) : base(rotulo, paiRef)
         {
@@ -82,9 +86,85 @@ namespace gcgcg
             }
         }
 
-        public void RetornarPecaSelecionada(COR corJogadorDaVez)
+        public void RetornarPecaSelecionada(COR corJogadorDaVez, ORDEM ordem)
         {
+            List<int> listaPosicoes = new List<int>(RetornarListaDePosicoes(corJogadorDaVez));
+            int posicaoAtual = 0;
 
+            if (_pecaSelecionada == null)
+            {
+                _pecaSelecionada = (Peca)RetornarListaObjetos()[listaPosicoes[posicaoAtual]];
+                _pecaSelecionada.SelecionarPeca();
+            }
+            else
+            {
+                posicaoAtual = RetornarListaObjetos().IndexOf(_pecaSelecionada);
+                posicaoAtual = listaPosicoes.IndexOf(posicaoAtual);
+                _pecaSelecionada.DesselecionarPeca();
+                int novaPosicao = 0;
+
+                switch (ordem)
+                {
+                    case ORDEM.ANTERIOR:
+                        if (posicaoAtual == 0)
+                        {
+                            novaPosicao = listaPosicoes.Count - 1;
+                        }
+                        else
+                        {
+                            novaPosicao = posicaoAtual - 1;
+                        }
+                        break;
+                    case ORDEM.POSTERIOR:
+                        if (posicaoAtual == (listaPosicoes.Count - 1))
+                        {
+                            novaPosicao = 0;
+                        }
+                        else
+                        {
+                            novaPosicao = posicaoAtual + 1;
+                        }
+                        break;
+                }
+
+                _pecaSelecionada = (Peca)RetornarListaObjetos()[listaPosicoes[novaPosicao]];
+                _pecaSelecionada.SelecionarPeca();
+            }
+        }
+
+        public void MoverPeca()
+        {
+            if (_pecaSelecionada != null)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        RegistroObjeto registro = Tabuleiro[i, j];
+
+                        if (registro.TranslacaoX == _pecaSelecionada.TranslacaoX
+                            && registro.TranslacaoZ == _pecaSelecionada.TranslacaoZ)
+                        {
+                            registro.Peca = null;
+
+                            RegistroObjeto registroMigracao = Tabuleiro[i + 1, j - 1];
+                            registroMigracao.Peca = _pecaSelecionada;
+                            _pecaSelecionada.TranslacaoXYZ(registroMigracao.TranslacaoX, 0, registroMigracao.TranslacaoZ);
+                        }
+                    }
+                }
+            }
+        }
+
+        private IEnumerable<int> RetornarListaDePosicoes(COR corJogadorDaVez)
+        {
+            foreach (Objeto objeto in RetornarListaObjetos())
+            {
+                if (objeto is Peca && ((Peca)objeto).Cor.Equals(corJogadorDaVez))
+                {
+                    yield return RetornarListaObjetos().IndexOf(objeto);
+                }
+            }
         }
 
         // public void MoverPeca(Peca peca, Coordenada coordenada)

@@ -39,9 +39,12 @@ namespace gcgcg
         private Cubo obj_Cubo;
         private Cilindro obj_Cilindro;
         private Cone obj_Cone;
-        private int visao = 1000;
 
         private COR _corJogadorDaVez = COR.BRANCO;
+        private Campo _campo;
+        private int _cameraX = 700;
+        private int _cameraY = 1900;
+        private int _cameraZ = 0;
 
         protected override void OnLoad(EventArgs e)
         {
@@ -49,11 +52,11 @@ namespace gcgcg
             Console.WriteLine(" --- Ajuda / Teclas: ");
             Console.WriteLine(" [  H     ] mostra teclas usadas. ");
 
-            Campo campo = new Campo("Campo", null);
-            objetosLista.Add(campo);
+            _campo = new Campo("Campo", null);
+            objetosLista.Add(_campo);
 
             camera.At = new Vector3(0, 0, 0);
-            camera.Eye = new Vector3(700, 1900, 0);
+            camera.Eye = new Vector3(_cameraX, _cameraY, _cameraZ);
             camera.Near = 100.0f;
             camera.Far = 2000.0f;
 
@@ -98,11 +101,34 @@ namespace gcgcg
             switch (e.Key)
             {
                 case Key.Right:
-
-                break;
+                    _campo.RetornarPecaSelecionada(_corJogadorDaVez, Campo.ORDEM.ANTERIOR);
+                    // _cameraX = _cameraX + 10;
+                    // camera.Eye = new Vector3(_cameraX, _cameraY, _cameraZ);
+                    break;
                 case Key.Left:
-
-                break;
+                    // _cameraX = _cameraX - 10;
+                    // camera.Eye = new Vector3(_cameraX, _cameraY, _cameraZ);
+                    _campo.RetornarPecaSelecionada(_corJogadorDaVez, Campo.ORDEM.POSTERIOR);
+                    break;
+                case Key.Up:
+                    _cameraY = _cameraY + 10;
+                    camera.Eye = new Vector3(_cameraX, _cameraY, _cameraZ);
+                    break;
+                case Key.Down:
+                    _cameraY = _cameraY - 10;
+                    camera.Eye = new Vector3(_cameraX, _cameraY, _cameraZ);
+                    break;
+                case Key.A:
+                    _cameraZ = _cameraZ + 10;
+                    camera.Eye = new Vector3(_cameraX, _cameraY, _cameraZ);
+                    break;
+                case Key.S:
+                    _cameraZ = _cameraZ - 10;
+                    camera.Eye = new Vector3(_cameraX, _cameraY, _cameraZ);
+                    break;
+                case Key.Enter:
+                    _campo.MoverPeca();
+                    break;
             }
             // if (e.Key == Key.H)
             //     Utilitario.AjudaTeclado();
@@ -207,6 +233,15 @@ namespace gcgcg
             {
                 objetoNovo.PontosUltimo().X = mouseX;
                 objetoNovo.PontosUltimo().Y = mouseY;
+            }
+        }
+
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            if (e.Button == MouseButton.Left)
+            {
+                Console.WriteLine(e.Position.X + ", " + (600 - e.Position.Y) + ", " + 0);
+                // _campo.RetornarPecaSelecionada(_corJogadorDaVez, e.Position.X, (600 - e.Position.Y));
             }
         }
 
