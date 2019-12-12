@@ -40,63 +40,20 @@ namespace gcgcg
         private Cilindro obj_Cilindro;
         private Cone obj_Cone;
         private int visao = 1000;
+
+        private COR _corJogadorDaVez = COR.BRANCO;
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             Console.WriteLine(" --- Ajuda / Teclas: ");
             Console.WriteLine(" [  H     ] mostra teclas usadas. ");
 
-            // obj_Retangulo = new Retangulo("A", null, new Ponto4D(50, 50, 0), new Ponto4D(150, 150, 0));
-            // objetosLista.Add(obj_Retangulo);
-            // objetoSelecionado = obj_Retangulo;
-
-            // obj_Cilindro = new Cilindro("D", null);
-            // objetosLista.Add(obj_Cilindro);
-            // obj_Cilindro.EscalaXYZ(50, 50, 50);
-            // obj_Cilindro.TranslacaoXYZ(150, 0, 0);
-
-            // // obj_Cone = new Cone("E", null);
-            // // objetosLista.Add(obj_Cone);
-            // // obj_Cone.EscalaXYZ(50, 50, 50);
-            // // obj_Cone.TranslacaoXYZ(200,0,0);
-
-            // obj_Cubo = new Cubo("F", null);
-            // obj_Cubo.EscalaXYZ(50, 20, 50);
-            // objetosLista.Add(obj_Cubo);
-
-            // Cubo obj_Cubo2 = new Cubo("F", null);
-            // obj_Cubo2.EscalaXYZ(50, 20, 50);
-            // obj_Cubo2.TranslacaoXYZ(0, 0, 75);
-            // objetosLista.Add(obj_Cubo2);
-
-            // objetoSelecionado = obj_Cilindro;
-            // Campo campo = new Campo("Campo", null);
-            // campo.EscalaXYZ(200, 10, 200);
-            // objetosLista.Add(campo);
-
-            int transladarX = 0;
-            int transladarZ = 0;
-            bool corPreta = false;
-
-            for (int i = 0; i < 8; i++)
-            {
-                for (int j = 0; j < 8; j++)
-                {
-                    Cubo cubo = new Cubo(i + ":" + j, null, corPreta);
-                    cubo.EscalaXYZ(50, 10, 50);
-                    cubo.TranslacaoXYZ(transladarX, 0, transladarZ);
-                    objetosLista.Add(cubo);
-                    transladarX += 75;
-                    objetoSelecionado = cubo;
-                    corPreta = !corPreta;
-                }
-                transladarZ += 75;
-                transladarX = 0;
-                corPreta = !corPreta;
-            }
+            Campo campo = new Campo("Campo", null);
+            objetosLista.Add(campo);
 
             camera.At = new Vector3(0, 0, 0);
-            camera.Eye = new Vector3(200, 1000, 1000);
+            camera.Eye = new Vector3(700, 1900, 0);
             camera.Near = 100.0f;
             camera.Far = 2000.0f;
 
@@ -138,98 +95,108 @@ namespace gcgcg
 
         protected override void OnKeyDown(OpenTK.Input.KeyboardKeyEventArgs e)
         {
-            if (e.Key == Key.H)
-                Utilitario.AjudaTeclado();
-            else if (e.Key == Key.Escape)
-                Exit();
-            else if (e.Key == Key.E)
+            switch (e.Key)
             {
-                Console.WriteLine("--- Objetos / Pontos: ");
-                for (var i = 0; i < objetosLista.Count; i++)
-                {
-                    objetosLista[i].PontosExibirObjeto();
-                }
+                case Key.Right:
+
+                break;
+                case Key.Left:
+
+                break;
             }
-            else if (e.Key == Key.O)
-                bBoxDesenhar = !bBoxDesenhar;
-            else if (e.Key == Key.Enter)
-            {
-                if (objetoNovo != null)
-                {
-                    objetoNovo.PontosRemoverUltimo();   // N3-Exe6: "truque" para deixar o rastro
-                    objetoSelecionado = objetoNovo;
-                    objetoNovo = null;
-                }
-            }
-            else if (e.Key == Key.Space)
-            {
-                if (objetoNovo == null)
-                {
-                    objetoNovo = new Poligono(objetoId + 1, null);
-                    objetosLista.Add(objetoNovo);
-                    objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));
-                    objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));  // N3-Exe6: "troque" para deixar o rastro
-                }
-                else
-                    objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));
-            }
-            else if (objetoSelecionado != null)
-            {
-                if (e.Key == Key.M)
-                    objetoSelecionado.ExibeMatriz();
-                else if (e.Key == Key.P)
-                    objetoSelecionado.PontosExibirObjeto();
-                else if (e.Key == Key.I)
-                    objetoSelecionado.AtribuirIdentidade();
-                //TODO: não está atualizando a BBox com as transformações geométricas
-                else if (e.Key == Key.Left)
-                {
-                    visao -= 10;
-                    camera.Eye = new Vector3(visao, 1000, 1000);
-                    // objetoSelecionado.TranslacaoXYZ(-10, 0, 0);
-                }
-                else if (e.Key == Key.Right){
-                     visao += 10;
-                    camera.Eye = new Vector3(visao, 1000, 1000);
-                    objetoSelecionado.TranslacaoXYZ(10, 0, 0);
-                }
-                else if (e.Key == Key.Up)
-                    objetoSelecionado.TranslacaoXYZ(0, 10, 0);
-                else if (e.Key == Key.Down)
-                    objetoSelecionado.TranslacaoXYZ(0, -10, 0);
-                else if (e.Key == Key.Number8)
-                    objetoSelecionado.TranslacaoXYZ(0, 0, 10);
-                else if (e.Key == Key.Number9)
-                    objetoSelecionado.TranslacaoXYZ(0, 0, -10);
-                else if (e.Key == Key.PageUp)
-                    objetoSelecionado.EscalaXYZ(2, 2, 2);
-                else if (e.Key == Key.PageDown)
-                    objetoSelecionado.EscalaXYZ(0.5, 0.5, 0.5);
-                else if (e.Key == Key.Home)
-                    objetoSelecionado.EscalaXYZBBox(0.5, 0.5, 0.5);
-                else if (e.Key == Key.End)
-                    objetoSelecionado.EscalaXYZBBox(2, 2, 2);
-                else if (e.Key == Key.Number1)
-                    objetoSelecionado.Rotacao(10);
-                else if (e.Key == Key.Number2)
-                    objetoSelecionado.Rotacao(-10);
-                else if (e.Key == Key.Number3)
-                    objetoSelecionado.RotacaoZBBox(10);
-                else if (e.Key == Key.Number4)
-                    objetoSelecionado.RotacaoZBBox(-10);
-                else if (e.Key == Key.Number0)
-                    objetoSelecionado = null;
-                else if (e.Key == Key.X)
-                    objetoSelecionado.TrocaEixoRotacao('x');
-                else if (e.Key == Key.Y)
-                    objetoSelecionado.TrocaEixoRotacao('y');
-                else if (e.Key == Key.Z)
-                    objetoSelecionado.TrocaEixoRotacao('z');
-                else
-                    Console.WriteLine(" __ Tecla não implementada.");
-            }
-            else
-                Console.WriteLine(" __ Tecla não implementada.");
+            // if (e.Key == Key.H)
+            //     Utilitario.AjudaTeclado();
+            // else if (e.Key == Key.Escape)
+            //     Exit();
+            // else if (e.Key == Key.E)
+            // {
+            //     Console.WriteLine("--- Objetos / Pontos: ");
+            //     for (var i = 0; i < objetosLista.Count; i++)
+            //     {
+            //         objetosLista[i].PontosExibirObjeto();
+            //     }
+            // }
+            // else if (e.Key == Key.O)
+            //     bBoxDesenhar = !bBoxDesenhar;
+            // else if (e.Key == Key.Enter)
+            // {
+            //     if (objetoNovo != null)
+            //     {
+            //         objetoNovo.PontosRemoverUltimo();   // N3-Exe6: "truque" para deixar o rastro
+            //         objetoSelecionado = objetoNovo;
+            //         objetoNovo = null;
+            //     }
+            // }
+            // else if (e.Key == Key.Space)
+            // {
+            //     if (objetoNovo == null)
+            //     {
+            //         objetoNovo = new Poligono(objetoId + 1, null);
+            //         objetosLista.Add(objetoNovo);
+            //         objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));
+            //         objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));  // N3-Exe6: "troque" para deixar o rastro
+            //     }
+            //     else
+            //         objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));
+            // }
+            // else if (objetoSelecionado != null)
+            // {
+            //     if (e.Key == Key.M)
+            //         objetoSelecionado.ExibeMatriz();
+            //     else if (e.Key == Key.P)
+            //         objetoSelecionado.PontosExibirObjeto();
+            //     else if (e.Key == Key.I)
+            //         objetoSelecionado.AtribuirIdentidade();
+            //     //TODO: não está atualizando a BBox com as transformações geométricas
+            //     else if (e.Key == Key.Left)
+            //     {
+            //         visao -= 10;
+            //         camera.Eye = new Vector3(visao, 1000, 1000);
+            //         // objetoSelecionado.TranslacaoXYZ(-10, 0, 0);
+            //     }
+            //     else if (e.Key == Key.Right)
+            //     {
+            //         visao += 10;
+            //         camera.Eye = new Vector3(visao, 1000, 1000);
+            //         objetoSelecionado.TranslacaoXYZ(10, 0, 0);
+            //     }
+            //     else if (e.Key == Key.Up)
+            //         objetoSelecionado.TranslacaoXYZ(0, 10, 0);
+            //     else if (e.Key == Key.Down)
+            //         objetoSelecionado.TranslacaoXYZ(0, -10, 0);
+            //     else if (e.Key == Key.Number8)
+            //         objetoSelecionado.TranslacaoXYZ(0, 0, 10);
+            //     else if (e.Key == Key.Number9)
+            //         objetoSelecionado.TranslacaoXYZ(0, 0, -10);
+            //     else if (e.Key == Key.PageUp)
+            //         objetoSelecionado.EscalaXYZ(2, 2, 2);
+            //     else if (e.Key == Key.PageDown)
+            //         objetoSelecionado.EscalaXYZ(0.5, 0.5, 0.5);
+            //     else if (e.Key == Key.Home)
+            //         objetoSelecionado.EscalaXYZBBox(0.5, 0.5, 0.5);
+            //     else if (e.Key == Key.End)
+            //         objetoSelecionado.EscalaXYZBBox(2, 2, 2);
+            //     else if (e.Key == Key.Number1)
+            //         objetoSelecionado.Rotacao(10);
+            //     else if (e.Key == Key.Number2)
+            //         objetoSelecionado.Rotacao(-10);
+            //     else if (e.Key == Key.Number3)
+            //         objetoSelecionado.RotacaoZBBox(10);
+            //     else if (e.Key == Key.Number4)
+            //         objetoSelecionado.RotacaoZBBox(-10);
+            //     else if (e.Key == Key.Number0)
+            //         objetoSelecionado = null;
+            //     else if (e.Key == Key.X)
+            //         objetoSelecionado.TrocaEixoRotacao('x');
+            //     else if (e.Key == Key.Y)
+            //         objetoSelecionado.TrocaEixoRotacao('y');
+            //     else if (e.Key == Key.Z)
+            //         objetoSelecionado.TrocaEixoRotacao('z');
+            //     else
+            //         Console.WriteLine(" __ Tecla não implementada.");
+            // }
+            // else
+            //     Console.WriteLine(" __ Tecla não implementada.");
         }
 
         //TODO: não está considerando o NDC

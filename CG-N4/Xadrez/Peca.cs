@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace gcgcg
 {
-    internal abstract class Peca
+    internal abstract class Peca : ObjetoGeometria
     {
         private int _x;
         private int _y;
@@ -21,9 +21,10 @@ namespace gcgcg
         }
 
         public COR Cor { get => _cor; }
-
         public bool SeMoveu { get => _seMoveu; }
-        protected Peca(int x, int y, COR cor)
+
+        protected Peca(string rotulo, int x, int y, COR cor)
+        : base(rotulo, null)
         {
             this._x = x;
             this._y = y;
@@ -173,6 +174,12 @@ namespace gcgcg
 
             return possibilidades;
         }
+
+        #region Métodos gráficos
+
+        protected override void DesenharObjeto() { }
+
+        #endregion
     }
 
     enum COR

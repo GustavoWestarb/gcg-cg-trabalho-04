@@ -16,134 +16,75 @@ namespace gcgcg
 
         public Campo(string rotulo, Objeto paiRef) : base(rotulo, paiRef)
         {
-            // _inicializarPeoes();
-            // _inicializarTorres();
-            // _inicializarCavalos();
-            // _inicializarBispos();
-            // _inicializarRainha();
-            // _inicializarRei();
-            // CriarRegistros();
-            // ArrumarTranslacao();
-
-            // for (int i = 0; i < 8; i++)
-            // {
-            //     for (int j = 0; j < 8; j++)
-            //     {
-            //         // if (Tabuleiro[i, j] != null)
-            //         // {
-            //         //     if (Tabuleiro[i, j].Cor == COR.BRANCO)
-            //         //     {
-            //         //         var a = Tabuleiro[i, j].MovimentosPossiveis(Tabuleiro, Pretas);
-            //         //         Tabuleiro[i, j].Movimentar(a?[0], Tabuleiro);
-            //         //     }
-            //         //     else
-            //         //     {
-            //         //         var a = Tabuleiro[i, j].MovimentosPossiveis(Tabuleiro, Brancas);
-            //         //         Tabuleiro[i, j].Movimentar(a?[0], Tabuleiro);
-            //         //     }
-            //         // }
-            //         Console.Write(Tabuleiro[i, j] + ", ");
-            //     }
-            //     Console.WriteLine();
-            // }
-            // // var piroquinha = Tabuleiro[0, 1].MovimentosPossiveis(Tabuleiro, Pretas);
-            // // MoverPeca(Tabuleiro[0, 1], piroquinha[0]);
-            // // var pirocao = Tabuleiro[0, 0].MovimentosPossiveis(Tabuleiro, Pretas);
-
-            // Console.WriteLine();
-            // for (int i = 0; i < 8; i++)
-            // {
-            //     for (int j = 0; j < 8; j++)
-            //     {
-            //         // if (Tabuleiro[i, j] != null)
-            //         // {
-            //         //     if (Tabuleiro[i, j].Cor == COR.BRANCO)
-            //         //     {
-            //         //         var a = Tabuleiro[i, j].MovimentosPossiveis(Tabuleiro, Pretas);
-            //         //         Tabuleiro[i, j].Movimentar(a?[0], Tabuleiro);
-            //         //     }
-            //         //     else
-            //         //     {
-            //         //         var a = Tabuleiro[i, j].MovimentosPossiveis(Tabuleiro, Brancas);
-            //         //         Tabuleiro[i, j].Movimentar(a?[0], Tabuleiro);
-            //         //     }
-            //         // }
-            //         Console.Write(Tabuleiro[i, j] + ", ");
-            //     }
-            //     Console.WriteLine();
-            // }
+            InicializarPeoes();
+            InicializarTorres();
+            InicializarCavalos();
+            InicializarBispos();
+            InicializarRainha();
+            InicializarRei();
+            CriarObjetosVazios();
+            CriarTabuleiro();
         }
 
-        protected override void DesenharObjeto()
-        {
-            // CriarTabuleiro();
-
-            Cubo obj_Cubo = new Cubo("F", null);
-            // obj_Cubo.EscalaXYZ(50, 20, 50);
-            FilhoAdicionar(obj_Cubo);
-
-            Cubo obj_Cubo2 = new Cubo("F", null);
-            // obj_Cubo2.EscalaXYZ(50, 20, 50);
-            obj_Cubo2.TranslacaoXYZ(0, 0, 75);
-            FilhoAdicionar(obj_Cubo2);
-        }
+        protected override void DesenharObjeto() { }
 
         private void CriarTabuleiro()
         {
             int transladarX = 0;
             int transladarZ = 0;
-
-            for (int i = 0; i < 2; i++)
-            {
-                for (int j = 0; j < 2; j++)
-                {
-                    Cubo cubo = new Cubo(i + ":" + j, null, false);
-                    // cubo.EscalaXYZ(50, 10, 50);
-                    cubo.TranslacaoXYZ(transladarX, 0, transladarZ);
-                    FilhoAdicionar(cubo);
-                    transladarX += 75;
-                }
-                transladarZ += 75;
-                transladarX = 0;
-            }
-        }
-
-        public void ArrumarTranslacao()
-        {
-            int transladarX = 0;
-            int transladarZ = 0;
+            bool corPreta = true;
 
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    Cubo cubo = Tabuleiro[i, j].Cubo;
-                    cubo.TranslacaoXYZ(transladarX, 0, transladarZ);
-                    FilhoAdicionar(cubo);
-                    transladarX += 75;
+                    RegistroObjeto registroObjeto = Tabuleiro[i, j];
+                    COR cor = COR.BRANCO;
+
+                    if (!corPreta)
+                    {
+                        cor = COR.PRETO;
+                    }
+
+                    if (registroObjeto != null)
+                    {
+                        registroObjeto.Chao.AjustarCor(cor);
+                        registroObjeto.AjustarInformacoes(transladarX, transladarZ);
+                        FilhoAdicionar(registroObjeto.Chao);
+
+                        if (registroObjeto.Peca != null)
+                        {
+                            FilhoAdicionar(registroObjeto.Peca);
+                        }
+                    }
+
+                    transladarX += 100;
+                    corPreta = !corPreta;
                 }
-                transladarZ += 75;
+
+                transladarZ += 100;
                 transladarX = 0;
+                corPreta = !corPreta;
             }
         }
 
-        public void CriarRegistros()
+        public void CriarObjetosVazios()
         {
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 2; j < 6; j++)
                 {
-                    RegistroObjeto registroObjeto = new RegistroObjeto()
-                    {
-                        Cubo = new Cubo("ChaoPeao", null),
-                        Peca = null,
-                        PosicaoTabuleiroX = i,
-                        PosicaoTabuleiroY = j
-                    };
-
-                    Tabuleiro[i, j] = registroObjeto;
+                    RegistroObjeto registroObjetoVazio = new RegistroObjeto();
+                    registroObjetoVazio.Chao = new Cubo("Chao", null, COR.BRANCO);
+                    registroObjetoVazio.Peca = null;
+                    Tabuleiro[i, j] = registroObjetoVazio;
                 }
             }
+        }
+
+        public void RetornarPecaSelecionada(COR corJogadorDaVez)
+        {
+
         }
 
         // public void MoverPeca(Peca peca, Coordenada coordenada)
@@ -196,241 +137,143 @@ namespace gcgcg
         //     _desfazerPretas.AddRange(Pretas);
         //     Tabuleiro.CopyTo(_desfazerTabuleiro, 0);
         // }
-        private void _inicializarPeoes()
+
+        private void InicializarPeoes()
         {
             for (int i = 0; i < 8; i++)
             {
-                RegistroObjeto registroObjetoBranco = new RegistroObjeto()
-                {
-                    Cubo = new Cubo("ChaoPeao", null),
-                    Peca = new Peao(i, 1, COR.BRANCO),
-                    PosicaoTabuleiroX = i,
-                    PosicaoTabuleiroY = 1
-                };
+                RegistroObjeto registroObjetoBranco = new RegistroObjeto();
+                registroObjetoBranco.Chao = new Cubo("Chao", null, COR.BRANCO);
+                registroObjetoBranco.Peca = new Peao($"Peao_B_{i}", i, 1, COR.BRANCO);
                 Brancas.Add(registroObjetoBranco.Peca);
 
-                RegistroObjeto registroObjetoPreto = new RegistroObjeto()
-                {
-                    Cubo = new Cubo("ChaoPeao", null),
-                    Peca = new Peao(i, 6, COR.PRETO),
-                    PosicaoTabuleiroX = i,
-                    PosicaoTabuleiroY = 6
-                };
+                RegistroObjeto registroObjetoPreto = new RegistroObjeto();
+                registroObjetoPreto.Chao = new Cubo("Chao", null, COR.BRANCO);
+                registroObjetoPreto.Peca = new Peao($"Peao_P_{i}", i, 6, COR.PRETO);
                 Pretas.Add(registroObjetoPreto.Peca);
 
                 Tabuleiro[i, 1] = registroObjetoBranco;
                 Tabuleiro[i, 6] = registroObjetoPreto;
-
-                // FilhoAdicionar(registroObjetoBranco.Cubo);
-                // FilhoAdicionar(registroObjetoPreto.Cubo);
             }
         }
 
-        private void _inicializarTorres()
+        private void InicializarTorres()
         {
-            RegistroObjeto registroObjetoTorreBrancaEsquerda = new RegistroObjeto()
-            {
-                Cubo = new Cubo("ChaoPeao", null),
-                Peca = new Torre(0, 0, COR.BRANCO),
-                PosicaoTabuleiroX = 0,
-                PosicaoTabuleiroY = 0
-            };
+            RegistroObjeto registroObjetoTorreBrancaEsquerda = new RegistroObjeto();
+            registroObjetoTorreBrancaEsquerda.Chao = new Cubo("Chao", null, COR.BRANCO);
+            registroObjetoTorreBrancaEsquerda.Peca = new Torre("Torre_B_E", 0, 0, COR.BRANCO);
             Brancas.Add(registroObjetoTorreBrancaEsquerda.Peca);
 
-            RegistroObjeto registroObjetoTorreBrancaDireta = new RegistroObjeto()
-            {
-                Cubo = new Cubo("ChaoPeao", null),
-                Peca = new Torre(7, 0, COR.BRANCO),
-                PosicaoTabuleiroX = 7,
-                PosicaoTabuleiroY = 0
-            };
+            RegistroObjeto registroObjetoTorreBrancaDireta = new RegistroObjeto();
+            registroObjetoTorreBrancaDireta.Chao = new Cubo("Chao", null, COR.BRANCO);
+            registroObjetoTorreBrancaDireta.Peca = new Torre("Torre_B_D", 7, 0, COR.BRANCO);
             Brancas.Add(registroObjetoTorreBrancaDireta.Peca);
 
             Tabuleiro[0, 0] = registroObjetoTorreBrancaEsquerda;
             Tabuleiro[7, 0] = registroObjetoTorreBrancaDireta;
 
-            // FilhoAdicionar(registroObjetoTorreBrancaEsquerda.Cubo);
-            // FilhoAdicionar(registroObjetoTorreBrancaDireta.Cubo);
-
-            RegistroObjeto registroObjetoTorrePretaEsquerda = new RegistroObjeto()
-            {
-                Cubo = new Cubo("ChaoPeao", null),
-                Peca = new Torre(0, 7, COR.PRETO),
-                PosicaoTabuleiroX = 0,
-                PosicaoTabuleiroY = 7
-            };
+            RegistroObjeto registroObjetoTorrePretaEsquerda = new RegistroObjeto();
+            registroObjetoTorrePretaEsquerda.Chao = new Cubo("Chao", null, COR.BRANCO);
+            registroObjetoTorrePretaEsquerda.Peca = new Torre("Torre_P_E", 0, 7, COR.PRETO);
             Pretas.Add(registroObjetoTorrePretaEsquerda.Peca);
 
-            RegistroObjeto registroObjetoTorrePretaDireita = new RegistroObjeto()
-            {
-                Cubo = new Cubo("ChaoPeao", null),
-                Peca = new Torre(7, 7, COR.PRETO),
-                PosicaoTabuleiroX = 7,
-                PosicaoTabuleiroY = 7
-            };
+            RegistroObjeto registroObjetoTorrePretaDireita = new RegistroObjeto();
+            registroObjetoTorrePretaDireita.Chao = new Cubo("Chao", null, COR.BRANCO);
+            registroObjetoTorrePretaDireita.Peca = new Torre("Torre_P_D", 7, 7, COR.PRETO);
             Pretas.Add(registroObjetoTorrePretaDireita.Peca);
 
             Tabuleiro[0, 7] = registroObjetoTorrePretaEsquerda;
             Tabuleiro[7, 7] = registroObjetoTorrePretaDireita;
-
-            // FilhoAdicionar(registroObjetoTorrePretaEsquerda.Cubo);
-            // FilhoAdicionar(registroObjetoTorrePretaDireita.Cubo);
         }
 
-        private void _inicializarCavalos()
+        private void InicializarCavalos()
         {
-            RegistroObjeto registroObjetoCavaloBrancoEsquerdo = new RegistroObjeto()
-            {
-                Cubo = new Cubo("ChaoPeao", null),
-                Peca = new Cavalo(1, 0, COR.BRANCO),
-                PosicaoTabuleiroX = 1,
-                PosicaoTabuleiroY = 0
-            };
+            RegistroObjeto registroObjetoCavaloBrancoEsquerdo = new RegistroObjeto();
+            registroObjetoCavaloBrancoEsquerdo.Chao = new Cubo("Chao", null, COR.BRANCO);
+            registroObjetoCavaloBrancoEsquerdo.Peca = new Cavalo("Cavalo_B_E", 1, 0, COR.BRANCO);
             Brancas.Add(registroObjetoCavaloBrancoEsquerdo.Peca);
 
-            RegistroObjeto registroObjetoCavaloBrancoDireito = new RegistroObjeto()
-            {
-                Cubo = new Cubo("ChaoPeao", null),
-                Peca = new Cavalo(6, 0, COR.BRANCO),
-                PosicaoTabuleiroX = 6,
-                PosicaoTabuleiroY = 0
-            };
+            RegistroObjeto registroObjetoCavaloBrancoDireito = new RegistroObjeto();
+            registroObjetoCavaloBrancoDireito.Chao = new Cubo("Chao", null, COR.BRANCO);
+            registroObjetoCavaloBrancoDireito.Peca = new Cavalo("Cavalo_B_D", 6, 0, COR.BRANCO);
             Brancas.Add(registroObjetoCavaloBrancoDireito.Peca);
 
             Tabuleiro[1, 0] = registroObjetoCavaloBrancoEsquerdo;
             Tabuleiro[6, 0] = registroObjetoCavaloBrancoDireito;
 
-            // FilhoAdicionar(registroObjetoCavaloBrancoEsquerdo.Cubo);
-            // FilhoAdicionar(registroObjetoCavaloBrancoDireito.Cubo);
-
-            RegistroObjeto registroObjetoCavaloPretoEsquerdo = new RegistroObjeto()
-            {
-                Cubo = new Cubo("ChaoPeao", null),
-                Peca = new Cavalo(1, 7, COR.PRETO),
-                PosicaoTabuleiroX = 1,
-                PosicaoTabuleiroY = 7
-            };
+            RegistroObjeto registroObjetoCavaloPretoEsquerdo = new RegistroObjeto();
+            registroObjetoCavaloPretoEsquerdo.Chao = new Cubo("Chao", null, COR.BRANCO);
+            registroObjetoCavaloPretoEsquerdo.Peca = new Cavalo("Cavalo_P_E", 1, 7, COR.PRETO);
             Pretas.Add(registroObjetoCavaloPretoEsquerdo.Peca);
 
-            RegistroObjeto registroObjetoCavaloPretoDireito = new RegistroObjeto()
-            {
-                Cubo = new Cubo("ChaoPeao", null),
-                Peca = new Cavalo(6, 7, COR.PRETO),
-                PosicaoTabuleiroX = 6,
-                PosicaoTabuleiroY = 7
-            };
+            RegistroObjeto registroObjetoCavaloPretoDireito = new RegistroObjeto();
+            registroObjetoCavaloPretoDireito.Chao = new Cubo("Chao", null, COR.BRANCO);
+            registroObjetoCavaloPretoDireito.Peca = new Cavalo("Cavalo_P_D", 6, 7, COR.PRETO);
             Pretas.Add(registroObjetoCavaloPretoDireito.Peca);
 
             Tabuleiro[1, 7] = registroObjetoCavaloPretoEsquerdo;
             Tabuleiro[6, 7] = registroObjetoCavaloPretoDireito;
-
-            // FilhoAdicionar(registroObjetoCavaloPretoEsquerdo.Cubo);
-            // FilhoAdicionar(registroObjetoCavaloPretoDireito.Cubo);
         }
 
-        private void _inicializarBispos()
+        private void InicializarBispos()
         {
-            RegistroObjeto registroObjetoBispoBrancoEsquerdo = new RegistroObjeto()
-            {
-                Cubo = new Cubo("ChaoPeao", null),
-                Peca = new Bispo(2, 0, COR.BRANCO),
-                PosicaoTabuleiroX = 2,
-                PosicaoTabuleiroY = 0
-            };
+            RegistroObjeto registroObjetoBispoBrancoEsquerdo = new RegistroObjeto();
+            registroObjetoBispoBrancoEsquerdo.Chao = new Cubo("Chao", null, COR.BRANCO);
+            registroObjetoBispoBrancoEsquerdo.Peca = new Bispo("Bispo_B_E", 2, 0, COR.BRANCO);
             Brancas.Add(registroObjetoBispoBrancoEsquerdo.Peca);
 
-            RegistroObjeto registroObjetoBispoBrancoDireito = new RegistroObjeto()
-            {
-                Cubo = new Cubo("ChaoPeao", null),
-                Peca = new Bispo(5, 0, COR.BRANCO),
-                PosicaoTabuleiroX = 5,
-                PosicaoTabuleiroY = 0
-            };
+            RegistroObjeto registroObjetoBispoBrancoDireito = new RegistroObjeto();
+            registroObjetoBispoBrancoDireito.Chao = new Cubo("Chao", null, COR.BRANCO);
+            registroObjetoBispoBrancoDireito.Peca = new Bispo("Bispo_B_D", 5, 0, COR.BRANCO);
             Brancas.Add(registroObjetoBispoBrancoDireito.Peca);
 
             Tabuleiro[2, 0] = registroObjetoBispoBrancoEsquerdo;
             Tabuleiro[5, 0] = registroObjetoBispoBrancoDireito;
 
-            // FilhoAdicionar(registroObjetoBispoBrancoEsquerdo.Cubo);
-            // FilhoAdicionar(registroObjetoBispoBrancoDireito.Cubo);
-
-            RegistroObjeto registroObjetoBispoPretoEsquerdo = new RegistroObjeto()
-            {
-                Cubo = new Cubo("ChaoPeao", null),
-                Peca = new Bispo(2, 7, COR.PRETO),
-                PosicaoTabuleiroX = 2,
-                PosicaoTabuleiroY = 7
-            };
+            RegistroObjeto registroObjetoBispoPretoEsquerdo = new RegistroObjeto();
+            registroObjetoBispoPretoEsquerdo.Chao = new Cubo("Chao", null, COR.BRANCO);
+            registroObjetoBispoPretoEsquerdo.Peca = new Bispo("Bispo_P_E", 2, 7, COR.PRETO);
             Pretas.Add(registroObjetoBispoPretoEsquerdo.Peca);
 
-            RegistroObjeto registroObjetoBiscoPretoDireito = new RegistroObjeto()
-            {
-                Cubo = new Cubo("ChaoPeao", null),
-                Peca = new Bispo(5, 7, COR.PRETO),
-                PosicaoTabuleiroX = 5,
-                PosicaoTabuleiroY = 7
-            };
+            RegistroObjeto registroObjetoBiscoPretoDireito = new RegistroObjeto();
+            registroObjetoBiscoPretoDireito.Chao = new Cubo("Chao", null, COR.BRANCO);
+            registroObjetoBiscoPretoDireito.Peca = new Bispo("Bispo_P_D", 5, 7, COR.PRETO);
             Pretas.Add(registroObjetoBiscoPretoDireito.Peca);
 
             Tabuleiro[2, 7] = registroObjetoBispoPretoEsquerdo;
             Tabuleiro[5, 7] = registroObjetoBiscoPretoDireito;
-
-            // FilhoAdicionar(registroObjetoBispoPretoEsquerdo.Cubo);
-            // FilhoAdicionar(registroObjetoBiscoPretoDireito.Cubo);
         }
 
-        private void _inicializarRainha()
+        private void InicializarRainha()
         {
-            RegistroObjeto registroObjetoRainhaBranca = new RegistroObjeto()
-            {
-                Cubo = new Cubo("ChaoPeao", null),
-                Peca = new Rainha(3, 0, COR.BRANCO),
-                PosicaoTabuleiroX = 3,
-                PosicaoTabuleiroY = 0
-            };
+            RegistroObjeto registroObjetoRainhaBranca = new RegistroObjeto();
+            registroObjetoRainhaBranca.Chao = new Cubo("Chao", null, COR.BRANCO);
+            registroObjetoRainhaBranca.Peca = new Rainha("Rainha_B", 3, 0, COR.BRANCO);
             Brancas.Add(registroObjetoRainhaBranca.Peca);
 
-            RegistroObjeto registroObjetoRainhaPreta = new RegistroObjeto()
-            {
-                Cubo = new Cubo("ChaoPeao", null),
-                Peca = new Rainha(3, 7, COR.PRETO),
-                PosicaoTabuleiroX = 3,
-                PosicaoTabuleiroY = 7
-            };
+            RegistroObjeto registroObjetoRainhaPreta = new RegistroObjeto();
+            registroObjetoRainhaPreta.Chao = new Cubo("Chao", null, COR.BRANCO);
+            registroObjetoRainhaPreta.Peca = new Rainha("Rainha_P", 3, 7, COR.PRETO);
             Pretas.Add(registroObjetoRainhaPreta.Peca);
 
             Tabuleiro[3, 0] = registroObjetoRainhaBranca;
             Tabuleiro[3, 7] = registroObjetoRainhaPreta;
-
-            // FilhoAdicionar(registroObjetoRainhaBranca.Cubo);
-            // FilhoAdicionar(registroObjetoRainhaPreta.Cubo);
         }
 
-        private void _inicializarRei()
+        private void InicializarRei()
         {
-            RegistroObjeto registroObjetoReiBranco = new RegistroObjeto()
-            {
-                Cubo = new Cubo("ChaoPeao", null),
-                Peca = new Rei(4, 0, COR.BRANCO),
-                PosicaoTabuleiroX = 4,
-                PosicaoTabuleiroY = 0
-            };
+            RegistroObjeto registroObjetoReiBranco = new RegistroObjeto();
+            registroObjetoReiBranco.Chao = new Cubo("Chao", null, COR.BRANCO);
+            registroObjetoReiBranco.Peca = new Rei("Rei_B", 4, 0, COR.BRANCO);
             Brancas.Add(registroObjetoReiBranco.Peca);
 
-            RegistroObjeto registroObjetoReiPreto = new RegistroObjeto()
-            {
-                Cubo = new Cubo("ChaoPeao", null),
-                Peca = new Rei(4, 7, COR.PRETO),
-                PosicaoTabuleiroX = 4,
-                PosicaoTabuleiroY = 7
-            };
+            RegistroObjeto registroObjetoReiPreto = new RegistroObjeto();
+            registroObjetoReiPreto.Chao = new Cubo("Chao", null, COR.BRANCO);
+            registroObjetoReiPreto.Peca = new Rei("Rei_P", 4, 7, COR.PRETO);
             Pretas.Add(registroObjetoReiPreto.Peca);
 
             Tabuleiro[4, 0] = registroObjetoReiBranco;
             Tabuleiro[4, 7] = registroObjetoReiPreto;
-
-            // FilhoAdicionar(registroObjetoReiBranco.Cubo);
-            // FilhoAdicionar(registroObjetoReiPreto.Cubo);
         }
     }
 }
